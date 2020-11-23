@@ -1,23 +1,27 @@
-import logo from './logo.svg';
+import React, { useState } from "react";
 import './App.css';
+import MovieList from "./MovieList";
+import NavbarApp from "./NavbarApp";
+import AddMovie from "./AddMovie";
+import { Movies } from "./Movies";
 
-function App() {
+function App(props) {
+  const [search, setSearch] = useState("")
+  const [star, setStar] = useState(1)
+  const [movies, setMovies] = useState(Movies)
+
+  let getSearch = (text) => {
+    setSearch(text)
+  }
+  let getStar = (star) => {
+    setStar(star)
+  }
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NavbarApp getSearch={getSearch} getStar={getStar} star={star} />
+      <MovieList movies={movies.filter(el => el.rating >= star && el.title.toLowerCase().includes(search.toLowerCase()))} />
+      <AddMovie addingFilm={setMovies} movies={movies} setUpdatedMovies={props.setUpdatedMovies}/>
     </div>
   );
 }
